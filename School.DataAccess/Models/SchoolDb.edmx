@@ -1,0 +1,342 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="SchoolDb2Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Tbl_Error">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ErrorText" Type="nvarchar" MaxLength="4000" Nullable="false" />
+          <Property Name="ErrorTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Tbl_Lesson">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="50" />
+          <Property Name="ss" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="PcName" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Tbl_Register">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LessonId" Type="int" Nullable="false" />
+          <Property Name="StudentId" Type="int" Nullable="false" />
+          <Property Name="Score" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Tbl_Student">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="50" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="50" />
+          <Property Name="NationalCode" Type="char" MaxLength="10" />
+          <Property Name="Mobile" Type="char" MaxLength="11" />
+          <Property Name="RegisterDate" Type="datetime2" Precision="3" Nullable="false" />
+          <Property Name="BirthDate" Type="datetime" />
+        </EntityType>
+        <Association Name="FK_Tbl_Register_Tbl_Lesson">
+          <End Role="Tbl_Lesson" Type="Self.Tbl_Lesson" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Tbl_Register" Type="Self.Tbl_Register" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Lesson">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tbl_Register">
+              <PropertyRef Name="LessonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Register_Tbl_Student">
+          <End Role="Tbl_Student" Type="Self.Tbl_Student" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Tbl_Register" Type="Self.Tbl_Register" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Student">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tbl_Register">
+              <PropertyRef Name="StudentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="AddError" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ErrorText" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="AddUser" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="fn" Type="nvarchar" Mode="In" />
+          <Parameter Name="ln" Type="nvarchar" Mode="In" />
+          <Parameter Name="nc" Type="char" Mode="In" />
+          <Parameter Name="mo" Type="char" Mode="In" />
+          <Parameter Name="rd" Type="datetime" Mode="In" />
+          <Parameter Name="bd" Type="datetime" Mode="In" />
+        </Function>
+        <Function Name="CheckExistsMobileNumber" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="bit">
+          <Parameter Name="MobileNumber" Type="char" Mode="In" />
+        </Function>
+        <Function Name="InsertStudent" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="FirstName" Type="nvarchar" Mode="In" />
+          <Parameter Name="LastName" Type="nvarchar" Mode="In" />
+          <Parameter Name="Mobile" Type="char" Mode="In" />
+        </Function>
+        <Function Name="SelectLessons" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="SelectStudents" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="SelectUser" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Search" Type="nvarchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="SchoolDb2ModelStoreContainer">
+          <EntitySet Name="Tbl_Error" EntityType="Self.Tbl_Error" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tbl_Lesson" EntityType="Self.Tbl_Lesson" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tbl_Register" EntityType="Self.Tbl_Register" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tbl_Student" EntityType="Self.Tbl_Student" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Tbl_Register_Tbl_Lesson" Association="Self.FK_Tbl_Register_Tbl_Lesson">
+            <End Role="Tbl_Lesson" EntitySet="Tbl_Lesson" />
+            <End Role="Tbl_Register" EntitySet="Tbl_Register" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Register_Tbl_Student" Association="Self.FK_Tbl_Register_Tbl_Student">
+            <End Role="Tbl_Student" EntitySet="Tbl_Student" />
+            <End Role="Tbl_Register" EntitySet="Tbl_Register" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SchoolDb2Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Tbl_Error">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ErrorText" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ErrorTime" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="Tbl_Lesson">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ss" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PcName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Tbl_Register" Relationship="Self.FK_Tbl_Register_Tbl_Lesson" FromRole="Tbl_Lesson" ToRole="Tbl_Register" />
+        </EntityType>
+        <EntityType Name="Tbl_Register">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LessonId" Type="Int32" Nullable="false" />
+          <Property Name="StudentId" Type="Int32" Nullable="false" />
+          <Property Name="Score" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Tbl_Lesson" Relationship="Self.FK_Tbl_Register_Tbl_Lesson" FromRole="Tbl_Register" ToRole="Tbl_Lesson" />
+          <NavigationProperty Name="Tbl_Student" Relationship="Self.FK_Tbl_Register_Tbl_Student" FromRole="Tbl_Register" ToRole="Tbl_Student" />
+        </EntityType>
+        <EntityType Name="Tbl_Student">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NationalCode" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+          <Property Name="Mobile" Type="String" MaxLength="11" FixedLength="true" Unicode="false" />
+          <Property Name="RegisterDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="BirthDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Tbl_Register" Relationship="Self.FK_Tbl_Register_Tbl_Student" FromRole="Tbl_Student" ToRole="Tbl_Register" />
+        </EntityType>
+        <Association Name="FK_Tbl_Register_Tbl_Lesson">
+          <End Role="Tbl_Lesson" Type="Self.Tbl_Lesson" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Tbl_Register" Type="Self.Tbl_Register" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Lesson">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tbl_Register">
+              <PropertyRef Name="LessonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tbl_Register_Tbl_Student">
+          <End Role="Tbl_Student" Type="Self.Tbl_Student" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Tbl_Register" Type="Self.Tbl_Register" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tbl_Student">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tbl_Register">
+              <PropertyRef Name="StudentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Conn_SchoolDb" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Tbl_Error" EntityType="Self.Tbl_Error" />
+          <EntitySet Name="Tbl_Lesson" EntityType="Self.Tbl_Lesson" />
+          <EntitySet Name="Tbl_Register" EntityType="Self.Tbl_Register" />
+          <EntitySet Name="Tbl_Student" EntityType="Self.Tbl_Student" />
+          <AssociationSet Name="FK_Tbl_Register_Tbl_Lesson" Association="Self.FK_Tbl_Register_Tbl_Lesson">
+            <End Role="Tbl_Lesson" EntitySet="Tbl_Lesson" />
+            <End Role="Tbl_Register" EntitySet="Tbl_Register" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tbl_Register_Tbl_Student" Association="Self.FK_Tbl_Register_Tbl_Student">
+            <End Role="Tbl_Student" EntitySet="Tbl_Student" />
+            <End Role="Tbl_Register" EntitySet="Tbl_Register" />
+          </AssociationSet>
+          <FunctionImport Name="AddError">
+            <Parameter Name="ErrorText" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="AddUser">
+            <Parameter Name="fn" Mode="In" Type="String" />
+            <Parameter Name="ln" Mode="In" Type="String" />
+            <Parameter Name="nc" Mode="In" Type="String" />
+            <Parameter Name="mo" Mode="In" Type="String" />
+            <Parameter Name="rd" Mode="In" Type="DateTime" />
+            <Parameter Name="bd" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="InsertStudent">
+            <Parameter Name="FirstName" Mode="In" Type="String" />
+            <Parameter Name="LastName" Mode="In" Type="String" />
+            <Parameter Name="Mobile" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SelectLessons" ReturnType="Collection(SchoolDb2Model.SelectLessons_Result)" />
+          <FunctionImport Name="SelectStudents" ReturnType="Collection(SchoolDb2Model.SelectStudents_Result)" />
+          <FunctionImport Name="SelectUser" ReturnType="Collection(SchoolDb2Model.SelectUser_Result)">
+            <Parameter Name="Search" Mode="In" Type="String" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="SelectLessons_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Title" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ss" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="PcName" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="SelectStudents_Result">
+          <Property Type="String" Name="FirstName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="LastName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Mobile" Nullable="true" MaxLength="11" />
+        </ComplexType>
+        <ComplexType Name="SelectUser_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="FirstName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="LastName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Mobile" Nullable="true" MaxLength="11" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SchoolDb2ModelStoreContainer" CdmEntityContainer="Conn_SchoolDb">
+          <EntitySetMapping Name="Tbl_Error">
+            <EntityTypeMapping TypeName="SchoolDb2Model.Tbl_Error">
+              <MappingFragment StoreEntitySet="Tbl_Error">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ErrorText" ColumnName="ErrorText" />
+                <ScalarProperty Name="ErrorTime" ColumnName="ErrorTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tbl_Lesson">
+            <EntityTypeMapping TypeName="SchoolDb2Model.Tbl_Lesson">
+              <MappingFragment StoreEntitySet="Tbl_Lesson">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="ss" ColumnName="ss" />
+                <ScalarProperty Name="PcName" ColumnName="PcName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tbl_Register">
+            <EntityTypeMapping TypeName="SchoolDb2Model.Tbl_Register">
+              <MappingFragment StoreEntitySet="Tbl_Register">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="LessonId" ColumnName="LessonId" />
+                <ScalarProperty Name="StudentId" ColumnName="StudentId" />
+                <ScalarProperty Name="Score" ColumnName="Score" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tbl_Student">
+            <EntityTypeMapping TypeName="SchoolDb2Model.Tbl_Student">
+              <MappingFragment StoreEntitySet="Tbl_Student">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="NationalCode" ColumnName="NationalCode" />
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+                <ScalarProperty Name="RegisterDate" ColumnName="RegisterDate" />
+                <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="AddError" FunctionName="SchoolDb2Model.Store.AddError" />
+          <FunctionImportMapping FunctionImportName="AddUser" FunctionName="SchoolDb2Model.Store.AddUser" />
+          <FunctionImportMapping FunctionImportName="InsertStudent" FunctionName="SchoolDb2Model.Store.InsertStudent" />
+          <FunctionImportMapping FunctionImportName="SelectLessons" FunctionName="SchoolDb2Model.Store.SelectLessons">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SchoolDb2Model.SelectLessons_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="ss" ColumnName="ss" />
+                <ScalarProperty Name="PcName" ColumnName="PcName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SelectStudents" FunctionName="SchoolDb2Model.Store.SelectStudents">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SchoolDb2Model.SelectStudents_Result">
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SelectUser" FunctionName="SchoolDb2Model.Store.SelectUser">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SchoolDb2Model.SelectUser_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
